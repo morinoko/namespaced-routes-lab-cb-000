@@ -10,6 +10,8 @@ class SongsController < ApplicationController
     else
       @songs = Song.all
     end
+
+    @songs = sort_songs(@songs)
   end
 
   def show
@@ -66,5 +68,18 @@ class SongsController < ApplicationController
   def song_params
     params.require(:song).permit(:title, :artist_name)
   end
-end
 
+  def set_preferences
+    @preferences = Preference.first
+  end
+
+  def sort_songs(songs)
+    sort_order = Preference.first.song_sort_order
+
+    if sort_order == "ASC"
+      songs.sort_by(&:title)
+    else
+      songs.sort_by(&:title).reverse
+    end
+  end
+end
