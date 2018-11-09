@@ -10,10 +10,8 @@ class SongsController < ApplicationController
         @songs = sort_songs(@artist.songs, @preferences)
       end
     else
-      @songs = 
+      @songs = sort_songs(Song.all, @preferences)
     end
-
-    @songs = sort_songs(Song.all, @preferences)
   end
 
   def show
