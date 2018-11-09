@@ -1,17 +1,19 @@
 class SongsController < ApplicationController
+  before_action :set_preferences, only: [:index, :new]
+  
   def index
     if params[:artist_id]
       @artist = Artist.find_by(id: params[:artist_id])
       if @artist.nil?
         redirect_to artists_path, alert: "Artist not found"
       else
-        @songs = @artist.songs
+        @songs = sort_songs(@artist.songs, @preferences)
       end
     else
-      @songs = Song.all
+      @songs = 
     end
 
-    @songs = sort_songs(@songs)
+    @songs = sort_songs(Song.all, @preferences)
   end
 
   def show
