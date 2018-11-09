@@ -73,8 +73,8 @@ class SongsController < ApplicationController
     @preferences = Preference.first
   end
 
-  def sort_songs(songs)
-    sort_order = Preference.first.song_sort_order
+  def sort_songs(songs, preferences)
+    sort_order = preferences.song_sort_order
 
     if sort_order == "ASC"
       songs.sort_by(&:title)
