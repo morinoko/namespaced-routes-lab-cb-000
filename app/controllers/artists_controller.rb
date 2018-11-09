@@ -2,7 +2,11 @@ class ArtistsController < ApplicationController
   before_action :set_preferences, only: [:index, :new]
 
   def index
-    @artists = sort_artists(Artist.all, @preferences)
+    if @preferences
+      @artists = Artist.order(name: @preferences.artist_sort_order)
+    else
+      @artists = Artist.all
+    end
   end
 
   def show
@@ -58,19 +62,5 @@ class ArtistsController < ApplicationController
   
   def set_preferences
     @preferences = Preference.first
-  end
-  
-  def sort_artists(artists, preferences)
-    if preferences
-      sort_order = preferences.artist_sort_order
-    
-      if sort_order == "ASC"
-        artists.sort_by(&:name)
-      else
-        artists.sort_by(&:name).reverse
-      end
-    else
-      artists
-    end
   end
 end
